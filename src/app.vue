@@ -1,23 +1,32 @@
+<style scoped lang="sass">
+    
+</style>
+
+
 <template>
-    <div>
+    <div class="wrap">
         <router-view></router-view>
+         <BackTop :bottom="50"></BackTop>
     </div>
+
 </template>
 <script>
     export default {
-        data() {
-            return {
-
-            };
-        },
         mounted() {
 
-        },
-        beforeDestroy() {
+           
 
+
+
+           
+        },
+        data () {
+            return {
+                
+            }
         },
         methods: {
-
+            
         }
-    };
+    }
 </script>

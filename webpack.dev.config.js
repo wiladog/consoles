@@ -17,6 +17,23 @@ module.exports = merge(webpackBaseConfig, {
         filename: '[name].js',
         chunkFilename: '[name].chunk.js'
     },
+    // --open --inline --hot --compress --history-api-fallback
+    devServer: {
+        // historyApiFallback: true,
+        // hot: true,
+        // inline: true,
+        open:true,
+        host: 'admin.hdpfans.dev',
+        port: 80,
+        stats: { colors: true },
+        proxy: {
+            '/apis': {
+              target: 'http://n.api.admin.hdpfans.dev',
+              pathRewrite: {'^/apis' : '/apis'},
+              changeOrigin: true
+            }
+        }
+    },
     plugins: [
         new ExtractTextPlugin({
             filename: '[name].css',

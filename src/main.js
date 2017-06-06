@@ -17,6 +17,8 @@ Vue.use(Vuex);
 Vue.use(VueI18n);
 Vue.use(iView);
 
+// console.info(Util.ajax.get);
+
 // 自动设置语言
 const navLang = navigator.language;
 const localLang = (navLang === 'zh-CN' || navLang === 'en-US') ? navLang : false;
