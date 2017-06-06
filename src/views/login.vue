@@ -124,7 +124,7 @@
                     <Form-item prop="captcha" >
                         <Input type="text" v-model="loginData.captcha" placeholder="验证码" @on-enter="handleSubmit('formLogin')">
                             <Icon type="ios-barcode-outline" slot="prepend" class="icon"></Icon>
-                            <img  src="http://n.api.admin.hdpfans.dev/captcha/default" slot="append" width="80" height="30" title="刷新验证码" @click="refreshCaptcha()" ref="captcha"  id="captcha"/>
+                            <img  :src="captcha_src" slot="append" width="80" height="30" title="刷新验证码" @click="refreshCaptcha()" ref="captcha"  id="captcha"/>
                         </Input>
                     </Form-item>
                     <div class="login-oths">
@@ -209,7 +209,8 @@ import { mapGetters, mapActions } from 'vuex'
         computed: {
             ...mapGetters({
                 is_vailed:'is_vailed',
-                loging:'loging'
+                loging:'loging',
+                captcha_src:'captcha_src'
             })
         },
         methods: {

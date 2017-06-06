@@ -6,13 +6,15 @@ const state = {
   added: [],
   loging:false,
   checkoutStatus: null,
-  is_vailed: false
+  is_vailed: false,
+  captcha_src:'http://n.api.admin.hdpfans.dev/captcha/default?'+Math.random()
 }
 // getters
 const getters = {
   checkoutStatus: state => state.checkoutStatus,
   is_vailed: state => state.is_vailed,
-  loging: state => state.loging
+  loging: state => state.loging,
+  captcha_src: state => state.captcha_src
 }
 // actions
 const actions = {
