@@ -144,8 +144,8 @@
 
                     <div class="login-btns">
                         <div class="btns-login">
-                            <Button type="primary"  :loading="loading" @click="handleSubmit('formLogin')">登录
-                            <span v-show="loading">...</span>
+                            <Button type="primary"  :loading="loging" @click="handleSubmit('formLogin')">登录
+                            <span v-show="loging">...</span>
                         </Button>
                         </div>
                         <div class="btns-register">
@@ -166,7 +166,8 @@
     </div>
 </template>
 <script>
-import Util from '../libs/util';
+// import Util from '../libs/util';
+import { mapGetters, mapActions } from 'vuex'
     export default {
         data () {
             return {
@@ -205,34 +206,60 @@ import Util from '../libs/util';
                 }
             }
         },
+        computed: {
+            ...mapGetters({
+                is_vailed:'is_vailed',
+                loging:'loging'
+            })
+        },
         methods: {
+           
+            handleCaptcha(response) {
+                // console.info('sdfsdf');
+                let that = this;
+                return new Promise(function (resolve, reject) {
+                    // console.log(response);
+                    if(response.data.status) {
+                        console.info('aaa');
+                        resolve(response.data.status);
+                        // that.$router.push({ name: 'admin', params: { userId: 123 }});
+                    } else {
+                        that.$Message.error({
+                            content: response.data.message,
+                            duration: 3
+                        });
+                        that.refreshCaptcha();
+                        that.loading = false;
+                        reject(response);
+                    }
+                    
+                    // setTimeout(resolve, 500, input + input);
+                });
+            },
             handleSubmit(name) {
                 this.$refs[name].validate((valid) => {
                     
                     if (valid) {
-                        this.loading = true;
-                        let that = this;
-                        // Util.ajax.get('/apis/cps',{
-                         Util.ajax.get('/apis/cps',{    
-                            params:{
-                                captcha:this.loginData.captcha
-                            }
+                        // this.loging = true;
+                        // let that = this;
+                        this.check({
+                            captcha:this.loginData.captcha
                         })
-                      .then(function (response) {
-                        if(response.data.status) {
-                            that.$router.push({ name: 'admin', params: { userId: 123 }});
-                        } else {
-                            that.$Message.error({
-                                content: response.data.message,
-                                duration: 3
-                            });
-                            that.refreshCaptcha();
-                        }
-                      })
-                      .catch(function (error) {
-                        console.log(error);
-                      });
-                        // console.info(this.Util);
+                      //   // Util.ajax.get('/apis/cps',{
+                      //   Util.ajax.get('/apis/cps',{    
+                      //       params:{
+                      //           captcha:this.loginData.captcha
+                      //       }
+                      //   })
+                      // .then(that.handleCaptcha)
+                      // .then(function(a) {
+                      //   console.info(a);
+                      //   alert(1);
+                      // })
+                      // .catch(function (error) {
+                      //   console.log(error);
+                      // });
+                                              // console.info(this.Util);
                         // this.loading = true;
                         // let that = this;
                         // setTimeout(function() {
@@ -244,6 +271,46 @@ import Util from '../libs/util';
                     }
                 })
             },
+            // handleSubmit(name) {
+            //     this.$refs[name].validate((valid) => {
+                    
+            //         if (valid) {
+            //             this.loading = true;
+            //             let that = this;
+            //             // Util.ajax.get('/apis/cps',{
+            //              Util.ajax.get('/apis/cps',{    
+            //                 params:{
+            //                     captcha:this.loginData.captcha
+            //                 }
+            //             })
+            //           .then(function (response) {
+            //             if(response.data.status) {
+            //                 that.$router.push({ name: 'admin', params: { userId: 123 }});
+            //             } else {
+            //                 that.$Message.error({
+            //                     content: response.data.message,
+            //                     duration: 3
+            //                 });
+            //                 that.refreshCaptcha();
+            //                 that.loading = false;
+            //             }
+            //           })
+            //           .catch(function (error) {
+            //             console.log(error);
+            //             that.loading = false;
+            //           });
+            //             // console.info(this.Util);
+            //             // this.loading = true;
+            //             // let that = this;
+            //             // setTimeout(function() {
+            //             //     that.$Message.success("登陆成功");
+            //             //     that.$router.push({ name: 'admin', params: { userId: 123 }});
+            //             // }, 1000);
+            //         } else {
+            //             return false;
+            //         }
+            //     })
+            // },
             refreshCaptcha() {
                 this.$refs.captcha.src = 'http://n.api.admin.hdpfans.dev/captcha/default?'+Math.random();
             },
@@ -256,7 +323,10 @@ import Util from '../libs/util';
                     this.headers = this.a;
                     
                 }
-            }
+            },
+            ...mapActions({
+            check:'checkCaptcha'
+           })
         }
     }
 </script>

@@ -2,7 +2,7 @@ import Vue from 'vue';
 import iView from 'iview';
 import VueRouter from 'vue-router';
 import Routers from './router';
-import Vuex from 'vuex';
+// import Vuex from 'vuex';
 import Util from './libs/util';
 import App from './app.vue';
 import 'iview/dist/styles/iview.css';
@@ -12,12 +12,11 @@ import Locales from './locale';
 import zhLocale from 'iview/src/locale/lang/zh-CN';
 import enLocale from 'iview/src/locale/lang/en-US';
 
+import store from './store'
+
 Vue.use(VueRouter);
-Vue.use(Vuex);
 Vue.use(VueI18n);
 Vue.use(iView);
-
-// console.info(Util.ajax.get);
 
 // 自动设置语言
 const navLang = navigator.language;
@@ -53,20 +52,20 @@ router.afterEach(() => {
 });
 
 
-const store = new Vuex.Store({
-    state: {
+// const store = new Vuex.Store({
+//     state: {
 
-    },
-    getters: {
+//     },
+//     getters: {
 
-    },
-    mutations: {
+//     },
+//     mutations: {
 
-    },
-    actions: {
+//     },
+//     actions: {
 
-    }
-});
+//     }
+// });
 
 
 new Vue({
