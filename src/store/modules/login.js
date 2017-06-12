@@ -7,14 +7,18 @@ const state = {
   loging:false,
   checkoutStatus: null,
   is_vailed: false,
-  captcha_src:'http://n.api.admin.hdpfans.dev/captcha/default?'+Math.random()
+  captcha_src:'http://n.api.admin.hdpfans.dev/captcha/default?'+Math.random(),
+  message:'',
+
+  
 }
 // getters
 const getters = {
   checkoutStatus: state => state.checkoutStatus,
   is_vailed: state => state.is_vailed,
   loging: state => state.loging,
-  captcha_src: state => state.captcha_src
+  captcha_src: state => state.captcha_src,
+  message: state => state.message
 }
 // actions
 const actions = {
@@ -38,36 +42,19 @@ const mutations = {
   [types.CHECK_CAPTCHA] (state, payload) {
     console.info(payload);
     state.is_vailed = true;
+    if(payload.status) {
+      // state.route.path = '/admin';
+      console.info(state.route);
+    } else {
+      state.captcha_src = 'http://n.api.admin.hdpfans.dev/captcha/default?'+Math.random();
+      // state.loginData.captcha = '';
+      state.message = payload.message + '-' +Math.random();
+    }
    
     state.loging = false;
   },
   [types.CHANGE_LOGING_STATUS] (state) {
       state.loging = !state.loging;
-  },
-  [types.ADD_TO_CART] (state, { id }) {
-    state.lastCheckout = null
-    const record = state.added.find(p => p.id === id)
-    if (!record) {
-      state.added.push({
-        id,
-        quantity: 1
-      })
-    } else {
-      record.quantity++
-    }
-  },
-  [types.CHECKOUT_REQUEST] (state) {
-    // clear cart
-    state.added = []
-    state.checkoutStatus = null
-  },
-  [types.CHECKOUT_SUCCESS] (state) {
-    state.checkoutStatus = 'successful'
-  },
-  [types.CHECKOUT_FAILURE] (state, { savedCartItems }) {
-    // rollback to the cart saved before sending the request
-    state.added = savedCartItems
-    state.checkoutStatus = 'failed'
   }
 }
 export default {

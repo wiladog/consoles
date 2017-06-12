@@ -172,11 +172,10 @@ import { mapGetters, mapActions } from 'vuex'
         data () {
             return {
                 loginData: {
-                    account:'',
-                    password:'',
-                    captcha:''
-                },
-                loading: false,
+                      account:'',
+                      password:'',
+                      captcha:''
+                  },
                 headers: {
                     title: '密码',
                     rtimg: 'src/assets/images/qr-login.png',
@@ -210,108 +209,31 @@ import { mapGetters, mapActions } from 'vuex'
             ...mapGetters({
                 is_vailed:'is_vailed',
                 loging:'loging',
-                captcha_src:'captcha_src'
+                captcha_src:'captcha_src',
+                message:'message'
             })
         },
+        watch: {
+            message () {
+                // console.info(this.message.split('-'));
+                let msg = this.message.split('-')[0];
+                this.$Message.error(msg);
+                this.loginData.captcha = '';
+            }
+        },
         methods: {
-           
-            handleCaptcha(response) {
-                // console.info('sdfsdf');
-                let that = this;
-                return new Promise(function (resolve, reject) {
-                    // console.log(response);
-                    if(response.data.status) {
-                        console.info('aaa');
-                        resolve(response.data.status);
-                        // that.$router.push({ name: 'admin', params: { userId: 123 }});
-                    } else {
-                        that.$Message.error({
-                            content: response.data.message,
-                            duration: 3
-                        });
-                        that.refreshCaptcha();
-                        that.loading = false;
-                        reject(response);
-                    }
-                    
-                    // setTimeout(resolve, 500, input + input);
-                });
-            },
             handleSubmit(name) {
                 this.$refs[name].validate((valid) => {
-                    
                     if (valid) {
-                        // this.loging = true;
-                        // let that = this;
                         this.check({
                             captcha:this.loginData.captcha
                         })
-                      //   // Util.ajax.get('/apis/cps',{
-                      //   Util.ajax.get('/apis/cps',{    
-                      //       params:{
-                      //           captcha:this.loginData.captcha
-                      //       }
-                      //   })
-                      // .then(that.handleCaptcha)
-                      // .then(function(a) {
-                      //   console.info(a);
-                      //   alert(1);
-                      // })
-                      // .catch(function (error) {
-                      //   console.log(error);
-                      // });
-                                              // console.info(this.Util);
-                        // this.loading = true;
-                        // let that = this;
-                        // setTimeout(function() {
-                        //     that.$Message.success("登陆成功");
-                        //     that.$router.push({ name: 'admin', params: { userId: 123 }});
-                        // }, 1000);
                     } else {
                         return false;
                     }
                 })
             },
-            // handleSubmit(name) {
-            //     this.$refs[name].validate((valid) => {
-                    
-            //         if (valid) {
-            //             this.loading = true;
-            //             let that = this;
-            //             // Util.ajax.get('/apis/cps',{
-            //              Util.ajax.get('/apis/cps',{    
-            //                 params:{
-            //                     captcha:this.loginData.captcha
-            //                 }
-            //             })
-            //           .then(function (response) {
-            //             if(response.data.status) {
-            //                 that.$router.push({ name: 'admin', params: { userId: 123 }});
-            //             } else {
-            //                 that.$Message.error({
-            //                     content: response.data.message,
-            //                     duration: 3
-            //                 });
-            //                 that.refreshCaptcha();
-            //                 that.loading = false;
-            //             }
-            //           })
-            //           .catch(function (error) {
-            //             console.log(error);
-            //             that.loading = false;
-            //           });
-            //             // console.info(this.Util);
-            //             // this.loading = true;
-            //             // let that = this;
-            //             // setTimeout(function() {
-            //             //     that.$Message.success("登陆成功");
-            //             //     that.$router.push({ name: 'admin', params: { userId: 123 }});
-            //             // }, 1000);
-            //         } else {
-            //             return false;
-            //         }
-            //     })
-            // },
+        
             refreshCaptcha() {
                 this.$refs.captcha.src = 'http://n.api.admin.hdpfans.dev/captcha/default?'+Math.random();
             },

@@ -14,9 +14,13 @@ import enLocale from 'iview/src/locale/lang/en-US';
 
 import store from './store'
 
+import { sync } from 'vuex-router-sync'
+
 Vue.use(VueRouter);
 Vue.use(VueI18n);
 Vue.use(iView);
+
+
 
 // 自动设置语言
 const navLang = navigator.language;
@@ -39,6 +43,8 @@ const RouterConfig = {
     routes: Routers
 };
 const router = new VueRouter(RouterConfig);
+
+sync(store, router)
 
 router.beforeEach((to, from, next) => {
     iView.LoadingBar.start();
