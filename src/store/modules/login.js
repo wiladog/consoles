@@ -23,7 +23,7 @@ const getters = {
 // actions
 const actions = {
   
-  checkCaptcha ({commit,state}, p) {
+  login ({commit,state}, p) {
     // state.loging = true;
     // console.info(p);
     commit(types.CHANGE_LOGING_STATUS,true);
@@ -44,13 +44,13 @@ const mutations = {
     state.is_vailed = true;
     if(payload.status) {
       // state.route.path = '/admin';
-      console.info(state.route);
+      // console.info(state.route);
     } else {
       state.captcha_src = 'http://n.api.admin.hdpfans.dev/captcha/default?'+Math.random();
       // state.loginData.captcha = '';
-      state.message = payload.message + '-' +Math.random();
+      
     }
-   
+    state.message = payload.message + '-' +Math.random();
     state.loging = false;
   },
   [types.CHANGE_LOGING_STATUS] (state) {

@@ -172,8 +172,8 @@ import { mapGetters, mapActions } from 'vuex'
         data () {
             return {
                 loginData: {
-                      account:'',
-                      password:'',
+                      account:'aaaa',
+                      password:'123456',
                       captcha:''
                   },
                 headers: {
@@ -217,17 +217,19 @@ import { mapGetters, mapActions } from 'vuex'
             message () {
                 // console.info(this.message.split('-'));
                 let msg = this.message.split('-')[0];
-                this.$Message.error(msg);
-                this.loginData.captcha = '';
+                if(msg == '通过验证!') {
+                    this.$router.push('/admin');
+                } else {
+                    this.$Message.error(msg);
+                    this.loginData.captcha = '';
+                }
             }
         },
         methods: {
             handleSubmit(name) {
                 this.$refs[name].validate((valid) => {
                     if (valid) {
-                        this.check({
-                            captcha:this.loginData.captcha
-                        })
+                        this.login(this.loginData)
                     } else {
                         return false;
                     }
@@ -238,17 +240,16 @@ import { mapGetters, mapActions } from 'vuex'
                 this.$refs.captcha.src = 'http://n.api.admin.hdpfans.dev/captcha/default?'+Math.random();
             },
             switchLoginType() {
-                console.info(this.headers.title);
+                // console.info(this.headers.title);
                 if(this.headers.title == '密码') {
                     this.headers = this.b;
-                    
                 } else {
                     this.headers = this.a;
                     
                 }
             },
             ...mapActions({
-            check:'checkCaptcha'
+            login:'login'
            })
         }
     }

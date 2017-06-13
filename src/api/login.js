@@ -10,7 +10,7 @@ export default {
   // captcha:this.loginData.captcha
   checkC (params, cb) {
 
-    Util.ajax.get('/apis/cps',{
+    Util.ajax.post('/apis/login',{
       params:params
     })
     .then(function(response) {
